@@ -1,0 +1,94 @@
+:root {
+  --black: #151515;
+  --third: #8dcbf5;
+  --grid-size: 4;
+  --cell-size: 18vmin;
+  --cell-gap: 2vmin;
+}
+
+/* BASIC STYLES */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--black);
+}
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+header,
+footer {
+  padding: 12px;
+}
+h1 {
+  font-size: 1.8rem;
+}
+
+/* FOOTER */
+footer .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+footer p,
+footer a,
+footer a img {
+  font-size: 20px;
+  color: var(--black);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 200ms;
+}
+footer a img {
+  height: 32px;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+footer p:hover,
+footer a:hover {
+  color: var(--third);
+}
+footer a img:hover {
+  background-color: var(--third);
+}
+
+/* GAME BOARD STYLES */
+.game-board {
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: repeat(var(--grid-size), var(--cell-size));
+  grid-template-rows: repeat(var(--grid-size), var(--cell-size));
+  gap: var(--cell-gap);
+  background-color: #bbb;
+  border-radius: 1vmin;
+  padding: var(--cell-gap);
+  position: relative;
+}
+.cell {
+  font-size: 7.5vmin;
+  background-color: #a0a0a0;
+  border-radius: 1vmin;
+}
+.tile {
+  font-size: 7.5vmin;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: blue;
+  border-radius: 1vmin;
+  top: 2vmin;
+  right: 2vmin;
+}
