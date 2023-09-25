@@ -4,31 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2048 Game</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <script defer src="./js/index.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script defer src="./js/index.js" type="module"></script>
   </head>
   <body>
-    <header>
-      <h1>2048 Game</h1>
-    </header>
-    <main class="game-board" id="game-board">
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="tile">2</div>
+    <main>
+      <header>
+        <h1>2048 Game</h1>
+        <p class="score-text">Score: </p>
+        <p class="steps-text">Steps: </p>
+        <p class="rating-btn">Rating</p>
+      </header>
+      <div id="game-board" class="game-board"></div>
     </main>
     <footer>
       <div class="container">

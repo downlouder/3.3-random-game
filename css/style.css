@@ -2,12 +2,21 @@
   --black: #151515;
   --third: #8dcbf5;
   --grid-size: 4;
-  --cell-size: 18vmin;
+  --cell-size: 16vmin;
   --cell-gap: 2vmin;
 }
 
+@keyframes show {
+  0% {
+    opacity: .5;
+    transform: scale(0);
+  }
+}
+
 /* BASIC STYLES */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -27,10 +36,25 @@ body {
 }
 header,
 footer {
-  padding: 12px;
+  z-index: 5;
+  padding: 8px;
 }
 h1 {
   font-size: 1.8rem;
+}
+
+/* HEADER */
+main header {
+  position: absolute;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 {
+  margin: 0;
+  font-size: 28px;
 }
 
 /* FOOTER */
@@ -63,15 +87,19 @@ footer a img:hover {
 }
 
 /* GAME BOARD STYLES */
+main {
+  margin-top: 24px;
+  background-color: #bbb;
+  border-radius: 1vmin;
+  position: relative;
+}
 .game-board {
   display: grid;
-  box-sizing: border-box;
   grid-template-columns: repeat(var(--grid-size), var(--cell-size));
   grid-template-rows: repeat(var(--grid-size), var(--cell-size));
   gap: var(--cell-gap);
-  background-color: #bbb;
-  border-radius: 1vmin;
   padding: var(--cell-gap);
+  padding-top: calc(var(--cell-gap) + 48px);
   position: relative;
 }
 .cell {
@@ -87,8 +115,16 @@ footer a img:hover {
   align-items: center;
   width: var(--cell-size);
   height: var(--cell-size);
-  background-color: blue;
   border-radius: 1vmin;
-  top: 2vmin;
-  right: 2vmin;
+  top: calc(var(--y) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap) + 48px);
+  left: calc(var(--x) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
+  font-weight: bold;
+  background-color: hsl(200, 50%, var(--background-lightness));
+  color: hsl(200, 25%, var(--color-lightness));
+  animation: show 200ms ease-in;
+  transition: 100ms ease-in;
+}
+
+.rating-btn {
+  cursor: pointer;
 }
