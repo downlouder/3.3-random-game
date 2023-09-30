@@ -5,6 +5,8 @@ const gameBoard = document.getElementById("game-board");
 const scoreText = document.querySelector(".score-text");
 const stepsText = document.querySelector(".steps-text");
 const ratingBtn = document.querySelector(".rating-btn");
+const modalRating = document.querySelector(".modal-rating-block");
+const statsTable = document.querySelector(".stats-table");
 const grid = new Grid(gameBoard);
 const arrayOfGames = JSON.parse(localStorage.getItem("games")) || [];
 let countOfSteps = 0;
@@ -160,9 +162,26 @@ function getScore(cells) {
 }
 
 ratingBtn.addEventListener("click", () => {
-  const results = JSON.parse(localStorage.getItem("games")).sort((a, b) => a.id - b.id);
-  console.log(results);
+  modalRating.classList.toggle("hidden");
+  if (!modalRating.classList.contains("hidden")) {
+    const results = JSON.parse(localStorage.getItem("games")).sort(
+      (a, b) => a.id - b.id
+    );
+    generateRatingTable(results);
+  }
 });
+function generateRatingTable(arr) {
+  modalRating.innerHTML = "";
+  arr.forEach((game) => {
+    modalRating.innerHTML += `
+      <div class="game-stats">
+        <p>Game: ${game.id}</p>
+        <p>Steps: ${game.steps}</p>
+        <p>Score: ${game.score}</p>
+      </div>
+    `;
+  });
+}
 function sortByScoreUpDown(arr) {
   return arr.sort((a, b) => b.score - a.score);
 }

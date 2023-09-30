@@ -37,24 +37,23 @@ body {
 header,
 footer {
   z-index: 5;
-  padding: 8px;
+}
+header {
+  padding: var(--cell-gap);
 }
 h1 {
   font-size: 1.8rem;
+  margin: 0;
 }
 
 /* HEADER */
-main header {
+header {
   position: absolute;
   width: 100%;
   height: 48px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-header h1 {
-  margin: 0;
-  font-size: 28px;
 }
 
 /* FOOTER */
@@ -64,10 +63,11 @@ footer .container {
   justify-content: center;
   gap: 24px;
 }
+.rating-btn,
 footer p,
 footer a,
 footer a img {
-  font-size: 20px;
+  font-size: 1em;
   color: var(--black);
   text-decoration: none;
   cursor: pointer;
@@ -78,6 +78,7 @@ footer a img {
   padding: 4px 8px;
   border-radius: 8px;
 }
+.rating-btn:hover,
 footer p:hover,
 footer a:hover {
   color: var(--third);
@@ -126,5 +127,64 @@ main {
 }
 
 .rating-btn {
-  cursor: pointer;
+  font-size: 1em;
+}
+.modal-rating-block {
+  width: 70vmin;
+  height: 70vmin;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8em;
+  position: absolute;
+  background-color: #ddd;
+  border-radius: 1vmin;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -31vmin);
+  z-index: 10;
+  padding: 36px;
+  overflow-y: scroll;
+}
+.modal-rating-block {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.modal-rating-block::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+.modal-rating-block:nth-child(1) {
+  margin-top: 30;
+}
+.hidden {
+  visibility: hidden;
+}
+.game-stats {
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.game-stats > p {
+  text-align: center;
+  width: 100px;
+  /* min-width: 80px; */
+}
+
+@media screen and (max-width: 767px) {
+  h1 {
+    font-size: 1.4em;
+    width: 100%;
+  }
+  header {
+    flex-wrap: wrap;
+  }
+  footer a, footer p, footer a img {
+    font-size: 1em;
+  }
+  .game-board {
+    padding-bottom: 32vmin;
+  }
 }

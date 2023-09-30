@@ -4,18 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2048 Game</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="./css/style.css" />
     <script defer src="./js/index.js" type="module"></script>
   </head>
   <body>
     <main>
       <header>
-        <h1>2048 Game</h1>
-        <p class="score-text">Score: </p>
-        <p class="steps-text">Steps: </p>
+        <h1>2048</h1>
+        <p class="score-text">Score:</p>
+        <p class="steps-text">Steps:</p>
         <p class="rating-btn">Rating</p>
       </header>
-      <div id="game-board" class="game-board"></div>
+      <div id="game-board" class="game-board">
+        <div class="hidden modal-rating-block">
+          <div class="stats-table"></div>
+        </div>
+      </div>
     </main>
     <footer>
       <div class="container">
