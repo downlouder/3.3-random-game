@@ -7,6 +7,8 @@ const stepsText = document.querySelector(".steps-text");
 const ratingBtn = document.querySelector(".rating-btn");
 const modalRating = document.querySelector(".modal-rating-block");
 const statsTable = document.querySelector(".stats-table");
+const [upBtn, downBtn, leftBtn, rightBtn] =
+  document.querySelectorAll(".control-btn");
 const grid = new Grid(gameBoard);
 const arrayOfGames = JSON.parse(localStorage.getItem("games")) || [];
 let countOfSteps = 0;
@@ -19,6 +21,7 @@ function setupInput() {
   scoreText.textContent = `Score: ${getScore(grid.cells)}`;
   stepsText.textContent = `Steps: ${countOfSteps}`;
   window.addEventListener("keydown", handleInput, { once: true });
+  window.addEventListener("click", touchInput, { once: true });
 }
 async function handleInput(e) {
   switch (e.key) {
@@ -57,6 +60,64 @@ async function handleInput(e) {
     default:
       setupInput();
       return;
+  }
+
+  grid.cells.forEach((cell) => cell.mergeTiles());
+  const newTile = new Tile(gameBoard);
+  grid.randomEmptyCell().tile = newTile;
+
+  if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
+    newTile.waitForTransition(true).then(() => {
+      const resultsOfGame = {
+        id: arrayOfGames.length
+          ? arrayOfGames[0].id + 1
+          : arrayOfGames.length + 1,
+        steps: countOfSteps,
+        score: getScore(grid.cells),
+      };
+      arrayOfGames.unshift(resultsOfGame);
+      if (arrayOfGames.length > 10) arrayOfGames.pop();
+      localStorage.setItem("games", JSON.stringify(arrayOfGames));
+      alert("You lose");
+    });
+    return;
+  }
+
+  setupInput();
+}
+
+async function touchInput(e) {
+  console.log(e.target.alt);
+  if (e.target.closest(".up-btn") || e.target.alt === "Up Arrow") {
+    countOfSteps++;
+    if (!canMoveUp()) {
+      setupInput();
+      return;
+    }
+    await moveUp();
+  } else if (e.target.closest(".down-btn") || e.target.alt === "Down Arrow") {
+    countOfSteps++;
+    if (!canMoveDown()) {
+      setupInput();
+      return;
+    }
+    await moveDown();
+  } else if (e.target.closest(".left-btn") || e.target.alt === "Left Arrow") {
+    countOfSteps++;
+    if (!canMoveLeft()) {
+      setupInput();
+      return;
+    }
+    await moveLeft();
+  } else if ((e.target.closest(".right-btn") || e.target.alt === "Right Arrow")) {
+    countOfSteps++;
+    if (!canMoveRight()) {
+      setupInput();
+      return;
+    }
+    await moveRight();
+  } else {
+    setupInput();
   }
 
   grid.cells.forEach((cell) => cell.mergeTiles());

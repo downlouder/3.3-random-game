@@ -167,7 +167,31 @@ main {
 .game-stats > p {
   text-align: center;
   width: 100px;
-  /* min-width: 80px; */
+}
+.control-buttons {
+  display: none;
+}
+.control-btn {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border-radius: 1vmin;
+  background-color: #a0a0a0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.control-btn > img {
+  width: 7vmin;
+}
+.down-btn {
+  transform: rotate(180deg);
+}
+.left-btn {
+  transform: rotate(270deg);
+}
+.right-btn {
+  transform: rotate(90deg);
 }
 
 @media screen and (max-width: 767px) {
@@ -182,6 +206,13 @@ main {
     font-size: 1em;
   }
   .game-board {
-    padding-bottom: 32vmin;
+    padding-bottom: calc((var(--cell-gap) * 2) + var(--cell-size));
+  }
+  .control-buttons {
+    display: flex;
+    gap: var(--cell-gap);
+    position: absolute;
+    left: var(--cell-gap);
+    bottom: var(--cell-gap);
   }
 }
