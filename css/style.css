@@ -154,9 +154,6 @@ main {
 .modal-rating-block::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
 }
-.modal-rating-block:nth-child(1) {
-  margin-top: 30;
-}
 .hidden {
   visibility: hidden;
 }
