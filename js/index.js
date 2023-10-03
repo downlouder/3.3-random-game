@@ -6,18 +6,20 @@ const scoreText = document.querySelector(".score-text");
 const stepsText = document.querySelector(".steps-text");
 const ratingBtn = document.querySelector(".rating-btn");
 const modalRating = document.querySelector(".modal-rating-block");
+const modalFinish = document.querySelector(".modal-finish-block");
+const resultOfGame = document.querySelector(".result-of-game");
+const playAgainBtn = document.querySelector(".play-again");
 const statsTable = document.querySelector(".stats-table");
-const [upBtn, downBtn, leftBtn, rightBtn] =
-  document.querySelectorAll(".control-btn");
-const grid = new Grid(gameBoard);
+const closeBtn = document.querySelector(".close-btn");
+let grid = new Grid(gameBoard);
 const arrayOfGames = JSON.parse(localStorage.getItem("games")) || [];
 let countOfSteps = 0;
+let isWin = localStorage.getItem("isWin") || false;
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 setupInput();
 
 function setupInput() {
-  console.log(getScore(grid.cells));
   scoreText.textContent = `Score: ${getScore(grid.cells)}`;
   stepsText.textContent = `Steps: ${countOfSteps}`;
   window.addEventListener("keydown", handleInput, { once: true });
@@ -26,35 +28,35 @@ function setupInput() {
 async function handleInput(e) {
   switch (e.key) {
     case "ArrowUp":
-      countOfSteps++;
       if (!canMoveUp()) {
         setupInput();
         return;
       }
+      countOfSteps++;
       await moveUp();
       break;
     case "ArrowDown":
-      countOfSteps++;
       if (!canMoveDown()) {
         setupInput();
         return;
       }
+      countOfSteps++;
       await moveDown();
       break;
     case "ArrowLeft":
-      countOfSteps++;
       if (!canMoveLeft()) {
         setupInput();
         return;
       }
+      countOfSteps++;
       await moveLeft();
       break;
     case "ArrowRight":
-      countOfSteps++;
       if (!canMoveRight()) {
         setupInput();
         return;
       }
+      countOfSteps++;
       await moveRight();
       break;
     default:
@@ -62,86 +64,88 @@ async function handleInput(e) {
       return;
   }
 
-  grid.cells.forEach((cell) => cell.mergeTiles());
-  const newTile = new Tile(gameBoard);
-  grid.randomEmptyCell().tile = newTile;
-
-  if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
-    newTile.waitForTransition(true).then(() => {
-      const resultsOfGame = {
-        id: arrayOfGames.length
-          ? arrayOfGames[0].id + 1
-          : arrayOfGames.length + 1,
-        steps: countOfSteps,
-        score: getScore(grid.cells),
-      };
-      arrayOfGames.unshift(resultsOfGame);
-      if (arrayOfGames.length > 10) arrayOfGames.pop();
-      localStorage.setItem("games", JSON.stringify(arrayOfGames));
-      alert("You lose");
-    });
-    return;
-  }
-
+  movingMechanic();
   setupInput();
 }
 
 async function touchInput(e) {
   console.log(e.target.alt);
   if (e.target.closest(".up-btn") || e.target.alt === "Up Arrow") {
-    countOfSteps++;
     if (!canMoveUp()) {
       setupInput();
       return;
     }
+    countOfSteps++;
     await moveUp();
   } else if (e.target.closest(".down-btn") || e.target.alt === "Down Arrow") {
-    countOfSteps++;
     if (!canMoveDown()) {
       setupInput();
       return;
     }
+    countOfSteps++;
     await moveDown();
   } else if (e.target.closest(".left-btn") || e.target.alt === "Left Arrow") {
-    countOfSteps++;
     if (!canMoveLeft()) {
       setupInput();
       return;
     }
-    await moveLeft();
-  } else if ((e.target.closest(".right-btn") || e.target.alt === "Right Arrow")) {
     countOfSteps++;
+    await moveLeft();
+  } else if (e.target.closest(".right-btn") || e.target.alt === "Right Arrow") {
     if (!canMoveRight()) {
       setupInput();
       return;
     }
+    countOfSteps++;
     await moveRight();
   } else {
     setupInput();
-  }
-
-  grid.cells.forEach((cell) => cell.mergeTiles());
-  const newTile = new Tile(gameBoard);
-  grid.randomEmptyCell().tile = newTile;
-
-  if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
-    newTile.waitForTransition(true).then(() => {
-      const resultsOfGame = {
-        id: arrayOfGames.length
-          ? arrayOfGames[0].id + 1
-          : arrayOfGames.length + 1,
-        steps: countOfSteps,
-        score: getScore(grid.cells),
-      };
-      arrayOfGames.unshift(resultsOfGame);
-      if (arrayOfGames.length > 10) arrayOfGames.pop();
-      localStorage.setItem("games", JSON.stringify(arrayOfGames));
-      alert("You lose");
-    });
     return;
   }
 
+  movingMechanic();
   setupInput();
+}
+
+function movingMechanic() {
+  grid.cells.forEach((cell) => cell.mergeTiles());
+  const newTile = new Tile(gameBoard);
+  grid.randomEmptyCell().tile = newTile;
+  if (isWin === "false") {
+    isWin = checkWin(grid.cells);
+    localStorage.setItem("isWin", isWin);
+    if (localStorage.getItem("isWin") === "true") {
+      saveGame();
+      modalFinish.classList.toggle("hidden");
+      resultOfGame.textContent = "You won!!!";
+    }
+  }
+
+  if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
+    newTile.waitForTransition(true).then(() => {
+      saveGame();
+      modalFinish.classList.toggle("hidden");
+      resultOfGame.textContent = "You lost!";
+    });
+    return;
+  }
+}
+
+function saveGame() {
+  const resultsOfGame = {
+    id: arrayOfGames.length ? arrayOfGames[0].id + 1 : arrayOfGames.length + 1,
+    steps: countOfSteps,
+    score: getScore(grid.cells),
+  };
+  arrayOfGames.unshift(resultsOfGame);
+  if (arrayOfGames.length > 10) arrayOfGames.pop();
+  localStorage.setItem("games", JSON.stringify(arrayOfGames));
+}
+
+function checkWin(cells) {
+  return [...cells]
+    .filter((cell) => cell.tile)
+    .some((cell) => cell.tile.value >= 2048);
 }
 
 function moveUp() {
@@ -222,6 +226,35 @@ function getScore(cells) {
     );
 }
 
+closeBtn.addEventListener("click", () => {
+  modalRating.classList.toggle("hidden");
+});
+
+playAgainBtn.addEventListener("click", () => {
+  gameBoard.innerHTML = `
+    <div class="control-buttons">
+      <div class="control-btn up-btn">
+        <img src="./svg/arrow-up-solid.svg" alt="Up Arrow" />
+      </div>
+      <div class="control-btn down-btn">
+        <img src="./svg/arrow-up-solid.svg" alt="Down Arrow" />
+      </div>
+      <div class="control-btn left-btn">
+        <img src="./svg/arrow-up-solid.svg" alt="Left Arrow" />
+      </div>
+      <div class="control-btn right-btn">
+        <img src="./svg/arrow-up-solid.svg" alt="Right Arrow" />
+      </div>
+    </div>
+  `;
+  grid = new Grid(gameBoard);
+  grid.randomEmptyCell().tile = new Tile(gameBoard);
+  grid.randomEmptyCell().tile = new Tile(gameBoard);
+  setupInput();
+  countOfSteps = 0;
+  modalFinish.classList.toggle("hidden");
+});
+
 ratingBtn.addEventListener("click", () => {
   modalRating.classList.toggle("hidden");
   if (!modalRating.classList.contains("hidden")) {
@@ -232,9 +265,9 @@ ratingBtn.addEventListener("click", () => {
   }
 });
 function generateRatingTable(arr) {
-  modalRating.innerHTML = "";
+  statsTable.innerHTML = "";
   arr.forEach((game) => {
-    modalRating.innerHTML += `
+    statsTable.innerHTML += `
       <div class="game-stats">
         <p>Game: ${game.id}</p>
         <p>Steps: ${game.steps}</p>

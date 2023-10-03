@@ -1,5 +1,5 @@
 const GRID_SIZE = 4;
-const CELL_SIZE = 16;
+const CELL_SIZE = window.innerWidth >= 768 ? 16 : 18;
 const CELL_GAP = 2;
 
 export default class Grid {
