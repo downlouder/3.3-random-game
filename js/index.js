@@ -14,13 +14,15 @@ const closeBtn = document.querySelector(".close-btn");
 let grid = new Grid(gameBoard);
 const arrayOfGames = JSON.parse(localStorage.getItem("games")) || [];
 let countOfSteps = 0;
+let score = 0;
 let isWin = localStorage.getItem("isWin") || false;
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 setupInput();
 
 function setupInput() {
-  scoreText.textContent = `Score: ${getScore(grid.cells)}`;
+  score = getScore(grid.cells);
+  scoreText.textContent = `Score: ${score}`;
   stepsText.textContent = `Steps: ${countOfSteps}`;
   window.addEventListener("keydown", handleInput, { once: true });
   window.addEventListener("click", touchInput, { once: true });
@@ -111,6 +113,41 @@ function movingMechanic() {
   grid.cells.forEach((cell) => cell.mergeTiles());
   const newTile = new Tile(gameBoard);
   grid.randomEmptyCell().tile = newTile;
+  if (score >= 2500) {
+    grid.cells.forEach((cell) => {
+      if (!cell.tile) {
+        return cell;
+      } else {
+        if (cell.tile.value < 8) {
+          cell.tile.value = cell.tile.value * 8;
+        }
+        return cell;
+      }
+    });
+  } else if (score >= 1000) {
+    grid.cells.forEach((cell) => {
+      if (!cell.tile) {
+        return cell;
+      } else {
+        if (cell.tile.value < 8) {
+          cell.tile.value = cell.tile.value * 4;
+        }
+        return cell;
+      }
+    });
+  } else if (score >= 250) {
+    grid.cells.forEach((cell) => {
+      if (!cell.tile) {
+        return cell;
+      } else {
+        if (cell.tile.value < 8) {
+          cell.tile.value = cell.tile.value * 2;
+        }
+        return cell;
+      }
+    });
+  }
+
   if (isWin === "false") {
     isWin = checkWin(grid.cells);
     localStorage.setItem("isWin", isWin);
@@ -119,8 +156,8 @@ function movingMechanic() {
       modalFinish.classList.toggle("hidden");
       resultOfGame.textContent = "You won!!!";
     }
+    return;
   }
-
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
     newTile.waitForTransition(true).then(() => {
       saveGame();
