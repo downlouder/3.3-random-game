@@ -6,7 +6,7 @@ const scoreText = document.querySelector(".score-text");
 const stepsText = document.querySelector(".steps-text");
 const ratingBtn = document.querySelector(".rating-btn");
 const modalRating = document.querySelector(".modal-rating-block");
-const filterBtns = document.querySelector(".filter-buttons > p");
+const filterBtns = document.querySelectorAll(".filter-buttons > p");
 const gameFilter = document.querySelector(".game-filter");
 const stepsFilter = document.querySelector(".steps-filter");
 const scoreFilter = document.querySelector(".score-filter");
@@ -335,24 +335,37 @@ function sortTable(el) {
   let results = JSON.parse(localStorage.getItem("games"));
   const filter = el.dataset.filter;
   if (filter === "default") {
+    setDefaultIcon(el);
     el.dataset.filter = "up";
+    el.style.setProperty("--icon", `url(../svg/sort-up-solid.svg)`);
     if (el === gameFilter) results = sortByGameDownUp(results);
     else if (el === stepsFilter) results = sortByScoreDownUp(results);
     else if (el === scoreFilter) results = sortByScoreDownUp(results);
   } else if (filter === "up") {
+    setDefaultIcon(el);
     el.dataset.filter = "down";
+    el.style.setProperty("--icon", `url(../svg/sort-down-solid.svg)`);
     if (el === gameFilter) results = sortByGameUpDown(results);
     else if (el === stepsFilter) results = sortByStepsUpDown(results);
     else if (el === scoreFilter) results = sortByScoreUpDown(results);
   } else if (filter === "down") {
+    setDefaultIcon(el);
     el.dataset.filter = "up";
+    el.style.setProperty("--icon", `url(../svg/sort-up-solid.svg)`);
     if (el === gameFilter) results = sortByGameDownUp(results);
     else if (el === stepsFilter) results = sortByScoreDownUp(results);
     else if (el === scoreFilter) results = sortByScoreDownUp(results);
   }
   generateRatingTable(results);
 }
-function setSortIcon(el) {}
+function setDefaultIcon(el) {
+  filterBtns.forEach((btn) => {
+    if (btn !== el) {
+      btn.dataset.filter = "default";
+      btn.style.setProperty('--icon', `url(../svg/sort-solid.svg)`)
+    }
+  });
+}
 function sortByGameUpDown(arr) {
   return arr.sort((a, b) => b.id - a.id);
 }

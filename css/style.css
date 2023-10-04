@@ -154,7 +154,7 @@ main {
 }
 .modal-rating-block {
   -ms-overflow-style: none;
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 .modal-rating-block::-webkit-scrollbar {
   display: none;
@@ -172,7 +172,6 @@ main {
   justify-content: center;
   align-items: center;
   gap: 0.8em;
-
 }
 .filter-buttons {
   max-width: 60vmin;
@@ -187,7 +186,7 @@ main {
 }
 .filter-buttons > p::before {
   display: inline-block;
-  /* content: attr(data-icon); */
+  content: var(--icon);
   width: 12px;
   vertical-align: middle;
   margin-right: 4px;
@@ -279,10 +278,12 @@ main {
   font-size: 2em;
 }
 
-
 @media screen and (max-width: 767px) {
   :root {
     --cell-size: 18vmin;
+  }
+  body {
+    min-height: 98vh;
   }
   h1 {
     font-size: 1.4em;
@@ -306,14 +307,20 @@ main {
     left: var(--cell-gap);
     bottom: var(--cell-gap);
   }
-  .modal-rating-block {
-    width: 90vmin;
-  }
   .game-stats {
     font-size: 0.9em;
   }
   .game-stats > p {
     width: 90px;
+  }
+  .modal-rating-block {
+    width: 90vmin;
+    height: 90vmin;
+    padding: 6vmin;
+    overflow-x: hidden;
+  }
+  .filter-buttons {
+    max-width: 80vmin;
   }
 }
 
