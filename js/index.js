@@ -1,6 +1,8 @@
 import Grid from "./Grid.js";
 import Tile from "./Tile.js";
 
+console.clear()
+
 const gameBoard = document.getElementById("game-board");
 const scoreText = document.querySelector(".score-text");
 const stepsText = document.querySelector(".steps-text");
@@ -75,7 +77,6 @@ async function handleInput(e) {
 }
 
 async function touchInput(e) {
-  console.log(e.target.alt);
   if (e.target.closest(".up-btn") || e.target.alt === "Up Arrow") {
     if (!canMoveUp()) {
       setupInput();
@@ -320,15 +321,12 @@ function generateRatingTable(arr) {
 }
 
 gameFilter.addEventListener("click", () => {
-  console.log("game");
   sortTable(gameFilter);
 });
 stepsFilter.addEventListener("click", () => {
-  console.log("steps");
   sortTable(stepsFilter);
 });
 scoreFilter.addEventListener("click", () => {
-  console.log("score");
   sortTable(scoreFilter);
 });
 function sortTable(el) {
