@@ -135,10 +135,15 @@ main {
   font-size: 1em;
 }
 .modal-rating-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 70vmin;
   height: 70vmin;
   position: absolute;
-  background-color: #ddd;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 1vmin;
   top: 50%;
   left: 50%;
@@ -169,6 +174,27 @@ main {
   gap: 0.8em;
 
 }
+.filter-buttons {
+  max-width: 60vmin;
+  width: 100%;
+  padding: 2vmin;
+  display: flex;
+  justify-content: space-around;
+}
+.filter-buttons > p {
+  cursor: pointer;
+  transition: all 300ms;
+}
+.filter-buttons > p::before {
+  display: inline-block;
+  content: url('../svg/sort-solid.svg');
+  width: 12px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.filter-buttons > p:hover {
+  color: var(--third);
+}
 .hidden {
   visibility: hidden;
 }
@@ -177,7 +203,7 @@ main {
   border-radius: 4px;
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(100, 100, 100, 0.5);
 }
 .game-stats > p {
   text-align: center;
@@ -224,11 +250,11 @@ main {
   position: absolute;
   backdrop-filter: blur(16px);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   width: 60vmin;
   height: 60vmin;
   padding: 6vmin;
   border-radius: 1vmin;
-  background-color: rgba(255, 255, 255, 0.1);
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
@@ -280,6 +306,15 @@ main {
     left: var(--cell-gap);
     bottom: var(--cell-gap);
   }
+  .modal-rating-block {
+    width: 90vmin;
+  }
+  .game-stats {
+    font-size: 0.9em;
+  }
+  .game-stats > p {
+    width: 90px;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -293,5 +328,8 @@ main {
     position: absolute;
     right: var(--cell-gap);
     bottom: var(--cell-gap);
+  }
+  .modal-rating-block {
+    width: 80vmin;
   }
 }

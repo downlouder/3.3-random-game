@@ -6,6 +6,10 @@ const scoreText = document.querySelector(".score-text");
 const stepsText = document.querySelector(".steps-text");
 const ratingBtn = document.querySelector(".rating-btn");
 const modalRating = document.querySelector(".modal-rating-block");
+const filterBtns = document.querySelector(".filter-buttons > p");
+const gameFilter = document.querySelector(".game-filter");
+const stepsFilter = document.querySelector(".steps-filter");
+const scoreFilter = document.querySelector(".score-filter");
 const modalFinish = document.querySelector(".modal-finish-block");
 const resultOfGame = document.querySelector(".result-of-game");
 const playAgainBtn = document.querySelector(".play-again");
@@ -141,7 +145,10 @@ function movingMechanic() {
         return cell;
       } else {
         if (cell.tile.value < 8) {
-          cell.tile.value = cell.tile.value * 2;
+          if (!cell.tile.multiplied) {
+            cell.tile.value = cell.tile.value * 2;
+            cell.tile.multiplied = true;
+          }
         }
         return cell;
       }
@@ -295,9 +302,7 @@ playAgainBtn.addEventListener("click", () => {
 ratingBtn.addEventListener("click", () => {
   modalRating.classList.toggle("hidden");
   if (!modalRating.classList.contains("hidden")) {
-    const results = JSON.parse(localStorage.getItem("games")).sort(
-      (a, b) => a.id - b.id
-    );
+    const results = sortByGameDownUp(JSON.parse(localStorage.getItem("games")));
     generateRatingTable(results);
   }
 });
@@ -312,6 +317,23 @@ function generateRatingTable(arr) {
       </div>
     `;
   });
+}
+
+gameFilter.addEventListener("click", () => {
+  console.log("game");
+});
+stepsFilter.addEventListener("click", () => {
+  console.log("steps");
+});
+scoreFilter.addEventListener("click", () => {
+  console.log("score");
+});
+
+function sortByGameUpDown(arr) {
+  return arr.sort((a, b) => b.id - a.id);
+}
+function sortByGameDownUp(arr) {
+  return arr.sort((a, b) => a.id - b.id);
 }
 function sortByScoreUpDown(arr) {
   return arr.sort((a, b) => b.score - a.score);
