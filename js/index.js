@@ -321,14 +321,38 @@ function generateRatingTable(arr) {
 
 gameFilter.addEventListener("click", () => {
   console.log("game");
+  sortTable(gameFilter);
 });
 stepsFilter.addEventListener("click", () => {
   console.log("steps");
+  sortTable(stepsFilter);
 });
 scoreFilter.addEventListener("click", () => {
   console.log("score");
+  sortTable(scoreFilter);
 });
-
+function sortTable(el) {
+  let results = JSON.parse(localStorage.getItem("games"));
+  const filter = el.dataset.filter;
+  if (filter === "default") {
+    el.dataset.filter = "up";
+    if (el === gameFilter) results = sortByGameDownUp(results);
+    else if (el === stepsFilter) results = sortByScoreDownUp(results);
+    else if (el === scoreFilter) results = sortByScoreDownUp(results);
+  } else if (filter === "up") {
+    el.dataset.filter = "down";
+    if (el === gameFilter) results = sortByGameUpDown(results);
+    else if (el === stepsFilter) results = sortByStepsUpDown(results);
+    else if (el === scoreFilter) results = sortByScoreUpDown(results);
+  } else if (filter === "down") {
+    el.dataset.filter = "up";
+    if (el === gameFilter) results = sortByGameDownUp(results);
+    else if (el === stepsFilter) results = sortByScoreDownUp(results);
+    else if (el === scoreFilter) results = sortByScoreDownUp(results);
+  }
+  generateRatingTable(results);
+}
+function setSortIcon(el) {}
 function sortByGameUpDown(arr) {
   return arr.sort((a, b) => b.id - a.id);
 }
