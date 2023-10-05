@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2048 Game</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script defer src="./js/index.js" type="module"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>2048</h1>
+        <p class="score-text">Score:</p>
+        <p class="steps-text">Steps:</p>
+        <p class="rating-btn">Rating</p>
+      </header>
+      <div id="game-board" class="game-board">
+        <div class="control-buttons">
+          <div class="control-btn up-btn">
+            <img src="./svg/arrow-up-solid.svg" alt="Up Arrow" />
+          </div>
+          <div class="control-btn down-btn">
+            <img src="./svg/arrow-up-solid.svg" alt="Down Arrow" />
+          </div>
+          <div class="control-btn left-btn">
+            <img src="./svg/arrow-up-solid.svg" alt="Left Arrow" />
+          </div>
+          <div class="control-btn right-btn">
+            <img src="./svg/arrow-up-solid.svg" alt="Right Arrow" />
+          </div>
+        </div>
+      </div>
+      <div class="hidden modal-rating-block">
+        <img class="close-btn" src="./svg/xmark-solid.svg" alt="Close Button" />
+        <div class="filter-buttons">
+          <p
+            class="game-filter"
+            data-filter="default"
+            style="--icon: url('../svg/sort-solid.svg')"
+          >
+            Game
+          </p>
+          <p
+            class="steps-filter"
+            data-filter="default"
+            style="--icon: url('../svg/sort-solid.svg')"
+          >
+            Steps
+          </p>
+          <p
+            class="score-filter"
+            data-filter="default"
+            style="--icon: url('../svg/sort-solid.svg')"
+          >
+            Score
+          </p>
+        </div>
+        <div class="stats-table"></div>
+      </div>
+      <div class="hidden modal-finish-block">
+        <p class="result-of-game"></p>
+        <button class="play-again">Play Again</button>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>2023</p>
+        <p>
+          <a target="_blank" href="https://github.com/downlouder">downlouder</a>
+        </p>
+        <p>
+          <a target="_blank" href="https://rs.school/js-stage0/">
+            <img src="./svg/rs_school_js.svg" alt="Logo" />
+          </a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
