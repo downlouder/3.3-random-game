@@ -323,8 +323,8 @@ function generateRatingTable(arr) {
 }
 
 // SWIPE MECHANIC
-document.window.addEventListener("touchstart", handleTouchStart, false);
-document.window.addEventListener("touchmove", handleTouchMove, false);
+document.addEventListener("touchstart", handleTouchStart, false);
+document.addEventListener("touchmove", handleTouchMove, false);
 function getTouches(e) {
   return e.touches;
 }
