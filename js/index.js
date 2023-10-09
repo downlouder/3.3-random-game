@@ -1,7 +1,7 @@
 import Grid from "./Grid.js";
 import Tile from "./Tile.js";
 
-console.clear()
+console.clear();
 
 const gameBoard = document.getElementById("game-board");
 const scoreText = document.querySelector(".score-text");
@@ -21,6 +21,8 @@ let grid = new Grid(gameBoard);
 const arrayOfGames = JSON.parse(localStorage.getItem("games")) || [];
 let countOfSteps = 0;
 let score = 0;
+let xDown = null;
+let yDown = null;
 let isWin = localStorage.getItem("isWin") || false;
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
@@ -320,6 +322,64 @@ function generateRatingTable(arr) {
   });
 }
 
+// SWIPE MECHANIC
+document.window.addEventListener("touchstart", handleTouchStart, false);
+document.window.addEventListener("touchmove", handleTouchMove, false);
+function getTouches(e) {
+  return e.touches;
+}
+function handleTouchStart(e) {
+  const firstTouch = getTouches(e)[0];
+  xDown = firstTouch.clientX;
+  yDown = firstTouch.clientY;
+}
+async function handleTouchMove(e) {
+  if (!xDown || !yDown) {
+    return;
+  }
+
+  let xUp = e.touches[0].clientX;
+  let yUp = e.touches[0].clientY;
+  let xDiff = xDown - xUp;
+  let yDiff = yDown - yUp;
+
+  if (Math.abs(xDiff) > Math.abs(yDiff)) {
+    if (xDiff > 0) {
+      if (!canMoveRight()) {
+        setupInput();
+        return;
+      }
+      countOfSteps++;
+      await moveRight();
+    } else {
+      if (!canMoveLeft()) {
+        setupInput();
+        return;
+      }
+      countOfSteps++;
+      await moveLeft();
+    }
+  } else {
+    if (yDiff > 0) {
+      if (!canMoveDown()) {
+        setupInput();
+        return;
+      }
+      countOfSteps++;
+      await moveDown();
+    } else {
+      if (!canMoveUp()) {
+        setupInput();
+        return;
+      }
+      countOfSteps++;
+      await moveUp();
+    }
+  }
+  xDown = null;
+  yDown = null;
+}
+
 gameFilter.addEventListener("click", () => {
   sortTable(gameFilter);
 });
@@ -351,7 +411,7 @@ function sortTable(el) {
     el.dataset.filter = "up";
     el.style.setProperty("--icon", `url(../svg/sort-up-solid.svg)`);
     if (el === gameFilter) results = sortByGameDownUp(results);
-    else if (el === stepsFilter) results = sortByScoreDownUp(results);
+    else if (el === stepsFilter) results = sortByStepsDownUp(results);
     else if (el === scoreFilter) results = sortByScoreDownUp(results);
   }
   generateRatingTable(results);
@@ -360,7 +420,7 @@ function setDefaultIcon(el) {
   filterBtns.forEach((btn) => {
     if (btn !== el) {
       btn.dataset.filter = "default";
-      btn.style.setProperty('--icon', `url(../svg/sort-solid.svg)`)
+      btn.style.setProperty("--icon", `url(../svg/sort-solid.svg)`);
     }
   });
 }
