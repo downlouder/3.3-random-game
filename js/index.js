@@ -23,6 +23,7 @@ let countOfSteps = 0;
 let score = 0;
 let xDown = null;
 let yDown = null;
+let swipeDirection = "";
 let isWin = localStorage.getItem("isWin") || false;
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
@@ -101,6 +102,43 @@ async function touchInput(e) {
     countOfSteps++;
     await moveLeft();
   } else if (e.target.closest(".right-btn") || e.target.alt === "Right Arrow") {
+    if (!canMoveRight()) {
+      setupInput();
+      return;
+    }
+    countOfSteps++;
+    await moveRight();
+  } else {
+    setupInput();
+    return;
+  }
+
+  movingMechanic();
+  setupInput();
+}
+async function swipeInput() {
+  if (swipeDirection === 'up') {
+    if (!canMoveUp()) {
+      setupInput();
+      return;
+    }
+    countOfSteps++;
+    await moveUp();
+  } else if (swipeDirection === 'down') {
+    if (!canMoveDown()) {
+      setupInput();
+      return;
+    }
+    countOfSteps++;
+    await moveDown();
+  } else if (swipeDirection === 'left') {
+    if (!canMoveLeft()) {
+      setupInput();
+      return;
+    }
+    countOfSteps++;
+    await moveLeft();
+  } else if (swipeDirection === 'right') {
     if (!canMoveRight()) {
       setupInput();
       return;
@@ -323,8 +361,8 @@ function generateRatingTable(arr) {
 }
 
 // SWIPE MECHANIC
-document.window.addEventListener("touchstart", handleTouchStart, false);
-document.window.addEventListener("touchmove", handleTouchMove, false);
+document.addEventListener("touchstart", handleTouchStart, false);
+document.addEventListener("touchmove", handleTouchMove, false);
 function getTouches(e) {
   return e.touches;
 }
@@ -345,37 +383,18 @@ async function handleTouchMove(e) {
 
   if (Math.abs(xDiff) > Math.abs(yDiff)) {
     if (xDiff > 0) {
-      if (!canMoveRight()) {
-        setupInput();
-        return;
-      }
-      countOfSteps++;
-      await moveRight();
+      swipeDirection = "left";
     } else {
-      if (!canMoveLeft()) {
-        setupInput();
-        return;
-      }
-      countOfSteps++;
-      await moveLeft();
+      swipeDirection = "right";
     }
   } else {
     if (yDiff > 0) {
-      if (!canMoveDown()) {
-        setupInput();
-        return;
-      }
-      countOfSteps++;
-      await moveDown();
+      swipeDirection = "up";
     } else {
-      if (!canMoveUp()) {
-        setupInput();
-        return;
-      }
-      countOfSteps++;
-      await moveUp();
+      swipeDirection = "down";
     }
   }
+  swipeInput();
   xDown = null;
   yDown = null;
 }
