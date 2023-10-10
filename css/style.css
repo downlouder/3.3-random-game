@@ -283,7 +283,7 @@ main {
     --cell-size: 18vmin;
   }
   body {
-    min-height: 94vh;
+    min-height: 88vh;
     overscroll-behavior: contain;
   }
   h1 {
